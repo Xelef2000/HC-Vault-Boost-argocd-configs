@@ -18,3 +18,4 @@ spec:
       kind: AppProject
   sourceRepos:
     - https://github.com/Xelef2000/HC-Vault-Boost-argocd-configs.git
+

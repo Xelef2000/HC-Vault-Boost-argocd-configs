@@ -81,7 +81,7 @@ spec:
               ingress:
                 enabled: true
                 hosts:
-                  - host: argocd.vault-boost.lab
+                  - argocd.vault-boost.lab
             redis:
               resources:
                 requests:

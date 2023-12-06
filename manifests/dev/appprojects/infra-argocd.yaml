@@ -20,5 +20,3 @@ spec:
     server: https://kubernetes.default.svc
   sourceRepos:
   - https://argoproj.github.io/argo-helm
-  - https://charts.adfinis.com
-  - https://github.com/Xelef2000/HC-Vault-Boost-argocd-configs.git

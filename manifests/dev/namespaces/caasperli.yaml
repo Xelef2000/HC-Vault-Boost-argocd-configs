@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: caasperli
+    pod-security.kubernetes.io/audit: baseline
+    k8s.adfinis.com/team: cloudnative
+  name: caasperli

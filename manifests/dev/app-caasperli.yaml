@@ -1,0 +1,38 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-caasperli
+  namespace: infra-argocd
+  labels:
+    app.kubernetes.io/name: helm-infra-argocd
+    app.kubernetes.io/version: app-caasperli
+    app.kubernetes.io/managed-by: helm-infra-argocd
+  annotations:
+    notifications.argoproj.io/subscribe.mopsos-trg.mopsos-svc: ""
+spec:
+  destination:
+    namespace: caasperli
+    server: https://kubernetes.default.svc
+  project: caasperli
+  source:
+    repoURL: https://charts.adfinis.com
+    chart: caasperli
+    targetRevision: 0.10.4
+    helm:
+      values: |-
+        prometheus:
+          enabled: true
+          extraLabels:
+            prometheus: kube-prometheus
+        grafana:
+          enabled: true
+        ingress:
+          enabled: true
+          className: nginx    
+          hosts:
+          - host: caasperli.vault-boost.lab
+            paths:
+            - path: /(?!metrics).*$
+              pathType: ImplementationSpecific
+        

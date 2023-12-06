@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: vault-dr
+    pod-security.kubernetes.io/audit: baseline
+  name: vault-dr

@@ -135,6 +135,23 @@ spec:
                   # since we don't support clients to authenticate from this EKS cluster here.
                   # https://www.vaultproject.io/docs/auth/kubernetes#configuring-kubernetes
                   enabled: false
+                affinity: |
+                  podAntiAffinity:
+                    # Choose a soft scheduling preference, because we distribute 3-5 Pods to 3 nodes/zone:
+                    # https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#an-example-of-a-pod-that-uses-pod-affinity
+                    #
+                    # The anti-affinity rule says that we prefer to schedule the Vault server pods (identified by name/instance labels)
+                    # in separate zones (topologyKey kubernetes.io/zone).
+                    preferredDuringSchedulingIgnoredDuringExecution:
+                      - weight: 100
+                        podAffinityTerm:
+                          labelSelector:
+                            matchLabels:
+                              app.kubernetes.io/name: {{ template "vault.name" . }}
+                              app.kubernetes.io/instance: "{{ .Release.Name }}"
+                              component: server
+                          topologyKey: kubernetes.io/zone
+
               injector:
                 # Deploy Vault server cluster w/o injector
                 enabled: false

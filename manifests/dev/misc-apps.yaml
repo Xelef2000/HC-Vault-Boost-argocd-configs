@@ -82,9 +82,8 @@ spec:
                   automated: {}
               - name: appprojects
                 namespace: infra-argocd
-                additionalLabels:
-                  app.kubernetes.io/component: infra
-                  app.kubernetes.io/name: helm-infrastructure-argoconfig
+                additionalAnnotations:
+                  argocd.argoproj.io/sync-wave: "-1"
                 project: appprojects
                 destination:
                   namespace: infra-argocd
@@ -95,6 +94,5 @@ spec:
                   targetRevision: HEAD
                 syncPolicy:
                   automated: {}
-
 
 

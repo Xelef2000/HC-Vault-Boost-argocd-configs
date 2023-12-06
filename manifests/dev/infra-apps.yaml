@@ -73,10 +73,15 @@ spec:
                   cpu: 500m
                   memory: 1Gi
               config:
+                url: https://argocd.vault-boost.lab
                 admin.enabled: "true"
                 users.anonymous.enabled: "false"
               staticAssets:
                 enabled: true
+              ingress:
+                enabled: true
+                hosts:
+                  - host: argocd.vault-boost.lab
             redis:
               resources:
                 requests:

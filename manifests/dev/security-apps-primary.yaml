@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: security-apps
+  name: security-apps-primary
   namespace: infra-argocd
   labels:
     app.kubernetes.io/name: argocd-configs

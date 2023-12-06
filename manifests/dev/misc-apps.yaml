@@ -49,7 +49,7 @@ spec:
                 - group: rbac.authorization.k8s.io
                   kind: ClusterRoleBinding
                 - group: rbac.authorization.k8s.io
-                  kind: ClusterRole
+                  kind: ClusterRole  
             applications:
               - name: argocd-configs
                 namespace: infra-argocd
@@ -65,3 +65,20 @@ spec:
                   automated: {}
                   syncOptions:
                     - CreateNamespace=true
+              - name: namespaces
+                namespace: infra-argocd
+                additionalLabels:
+                  app.kubernetes.io/component: infra
+                  app.kubernetes.io/name: helm-infrastructure-argoconfig
+                project: namespaces
+                destination:
+                  namespace: infra-argocd
+                  server: https://kubernetes.default.svc
+                source:
+                  path: manifests/dev/namespaces.yaml
+                  repoURL: https://github.com/Xelef2000/HC-Vault-Boost-argocd-configs.git
+                  targetRevision: HEAD
+                syncPolicy:
+                  automated: {}
+
+

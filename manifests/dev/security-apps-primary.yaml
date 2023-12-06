@@ -99,7 +99,7 @@ spec:
                         path = "/vault/data"
                         retry_join {
                           # example: https://github.com/hashicorp/vault/pull/12982/files
-                          leader_api_addr = "https://vault-active.app-vault.svc.cluster.local:8200"
+                          leader_api_addr = "https://vault-primary-active:8200"
                           leader_tls_servername = "vault-primary.vault-boost.lab"
                           leader_ca_cert_file = "/vault/tls/vault.ca"
                         }
@@ -126,7 +126,7 @@ spec:
                   # kubectl create secret generic vault-license \
                   #  --from-file=license=vault.hclic \
                   secretName: hashicorp-vault-license-primary
-                  secretKey: license
+                  secretKey: license.hclic
                 image:
                   repository: docker.io/hashicorp/vault-enterprise
                   tag: 1.13.11-ent

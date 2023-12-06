@@ -75,7 +75,7 @@ spec:
                   namespace: infra-argocd
                   server: https://kubernetes.default.svc
                 source:
-                  path: manifests/dev/namespaces.yaml
+                  path: manifests/dev/namespaces/
                   repoURL: https://github.com/Xelef2000/HC-Vault-Boost-argocd-configs.git
                   targetRevision: HEAD
                 syncPolicy:

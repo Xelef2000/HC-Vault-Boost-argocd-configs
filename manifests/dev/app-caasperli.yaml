@@ -8,8 +8,6 @@ metadata:
     app.kubernetes.io/name: helm-infra-argocd
     app.kubernetes.io/version: app-caasperli
     app.kubernetes.io/managed-by: helm-infra-argocd
-  annotations:
-    notifications.argoproj.io/subscribe.mopsos-trg.mopsos-svc: ""
 spec:
   destination:
     namespace: caasperli

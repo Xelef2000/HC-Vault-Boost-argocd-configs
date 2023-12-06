@@ -31,25 +31,6 @@ spec:
             server: https://kubernetes.default.svc
             namespace: infra-argocd
           values:
-            projects:
-              - name: infra-argocd
-                description: Deploy and manage the hosted Argo CD instance.
-                sourceRepos:
-                - https://argoproj.github.io/argo-helm
-                - https://charts.adfinis.com
-                - https://github.com/Xelef2000/HC-Vault-Boost-argocd-configs.git
-                destinations:
-                - namespace: infra-argocd
-                  server: https://kubernetes.default.svc
-                clusterResourceWhitelist:
-                - group: ""
-                  kind: Namespace
-                - group: apiextensions.k8s.io
-                  kind: CustomResourceDefinition
-                - group: rbac.authorization.k8s.io
-                  kind: ClusterRoleBinding
-                - group: rbac.authorization.k8s.io
-                  kind: ClusterRole  
             applications:
               - name: argocd-configs
                 namespace: infra-argocd

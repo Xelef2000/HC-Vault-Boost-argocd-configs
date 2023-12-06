@@ -55,11 +55,11 @@ spec:
               server:
                 resources:
                   requests:
-                    memory: 256Mi
+                    memory: 556Mi
                     cpu: 250m
                   limits:
                     memory: 1024Mi
-                    cpu: 1000m
+                    cpu: 2000m
                 extraEnvironmentVars:
                   VAULT_CACERT: "/vault/tls/vault.ca"
                 # Ingress allows ingress services to be created to allow external access
@@ -112,14 +112,14 @@ spec:
                   - name: tls
                     secret:
                       secretName: vault-ha-tls
-                  - name: audit-logs
+                  - name: audit-logs-dr
                     emptyDir: {}
                 volumeMounts:
                   # Mount above secret on specific path
                   - name: tls
                     mountPath: /vault/tls
                     readOnly: true
-                  - name: audit-logs
+                  - name: audit-logs-dr
                     mountPath: /var/log
                 enterpriseLicense:
                   # Store Vault enterprise license in secret

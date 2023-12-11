@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vault-cluster-api-autounseal
+  namespace: vault-autounseal
+spec:
+  selector:
+    app.kubernetes.io/name: vault-autounseal
+  ports:
+    - protocol: TCP
+      port: 8201
+      targetPort: 8201

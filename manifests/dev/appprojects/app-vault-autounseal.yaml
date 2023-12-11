@@ -1,0 +1,18 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: app-vault-autounseal
+  namespace: infra-argocd
+  labels:
+    app.kubernetes.io/name: helm-infra-argocd
+    app.kubernetes.io/component: app-vault-autounseal
+    app.kubernetes.io/managed-by: helm-infra-argocd
+spec:
+  description: deploy Vault
+  destinations:
+    - namespace: vault-autounseal
+      server: https://kubernetes.default.svc
+  sourceRepos:
+    - https://charts.adfinis.com
+    - https://helm.releases.hashicorp.com

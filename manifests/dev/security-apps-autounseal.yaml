@@ -1,0 +1,159 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: security-apps-dr
+  namespace: infra-argocd
+  labels:
+    app.kubernetes.io/name: argocd-configs
+    app.kubernetes.io/component: security-apps
+    app.kubernetes.io/managed-by: argocd-configs
+spec:
+  destination:
+    namespace: infra-argocd
+    server: https://kubernetes.default.svc
+  project: infra-argocd
+  syncPolicy:
+    automated: {}
+  source:
+    chart: security-apps
+    repoURL: https://charts.adfinis.com
+    targetRevision: "0.81.0"
+    helm:
+      values: |-
+          fullnameOverride: app
+          vault:
+            enabled: true
+            name: vault-autounseal
+            project: app-vault-autounseal
+            destination:
+              namespace: "vault-autounseal"
+              server: https://kubernetes.default.svc
+            chart: "vault"
+            syncPolicy:
+              automated: {}
+            values: 
+              # Official Vault Helm Chart values
+              global:
+                tlsDisable: false
+              ui:
+                # Service for replication purposes. serviceType can be used to control
+                # the type of service created. For example, setting this to "LoadBalancer"
+                # will create an external load balancer (for supported K8S installations).
+                enabled: false
+                # The service should only contain selectors for active Vault pod
+                activeVaultPodOnly: false
+                serviceType: "LoadBalancer"
+                externalPort: 8201
+                targetPort: 8201
+                # The externalTrafficPolicy can be set to either Cluster or Local
+                # and is only valid for LoadBalancer and NodePort service types.
+                # The default value is Cluster.
+                # ref: https://kubernetes.io/docs/concepts/services-networking/service/#external-traffic-policy
+                externalTrafficPolicy: Cluster
+            
+              server:
+                resources:
+                  requests:
+                    memory: 556Mi
+                    cpu: 250m
+                  limits:
+                    memory: 1024Mi
+                    cpu: 2000m
+                extraEnvironmentVars:
+                  VAULT_CACERT: "/vault/tls/vault.ca"
+                # Ingress allows ingress services to be created to allow external access
+                # from Kubernetes to access Vault pods.
+                ingress:
+                  enabled: true
+                  ingressClassName: "nginx"
+                  annotations:
+                    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+                    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+                    nginx.ingress.kubernetes.io/backend-protocol: "https"
+                  hosts:
+                    - host: vault-autounseal.vault-boost.lab
+                      paths: []
+                ha:
+                  enabled: true
+                  replicas: 3
+                  raft:
+                    enabled: true
+                    # Set the Node Raft ID to the name of the pod
+                    setNodeId: false
+                    config: |
+                      # Vault server configuration
+                      # https://www.vaultproject.io/docs/configuration
+                      ui = true
+                      api_addr = "https://vault-autounseal.vault-boost.lab"
+                      disable_mlock = true
+                      listener "tcp" {
+                        address = "[::]:8200"
+                        cluster_address = "[::]:8201"
+                        #tls_disable = "true"
+                        tls_client_ca_file = "/vault/tls/vault.ca"
+                        tls_cert_file = "/vault/tls/vault.crt"
+                        tls_key_file = "/vault/tls/vault.key"
+                      }
+                      storage "raft" {
+                        path = "/vault/data"
+                        retry_join {
+                          # example: https://github.com/hashicorp/vault/pull/12982/files
+                          leader_api_addr = "https://vault-autounseal-active:8200"
+                          leader_tls_servername = "vault-autounseal.vault-boost.lab"
+                          leader_ca_cert_file = "/vault/tls/vault.ca"
+                        }
+                      }
+                      # Tag Kubernetes pods with labels for service discovery
+                      # https://www.vaultproject.io/docs/configuration/service-registration/kubernetes
+                      service_registration "kubernetes" {}
+            
+                volumes:
+                  - name: tls
+                    secret:
+                      secretName: vault-ha-tls
+                  - name: audit-logs-dr
+                    emptyDir: {}
+                volumeMounts:
+                  # Mount above secret on specific path
+                  - name: tls
+                    mountPath: /vault/tls
+                    readOnly: true
+                  - name: audit-logs-dr
+                    mountPath: /var/log
+                enterpriseLicense:
+                  # Store Vault enterprise license in secret
+                  # kubectl create secret generic vault-license \
+                  #  --from-file=license=vault.hclic \
+                  secretName: hashicorp-vault-license-dr
+                  secretKey: license.hclic
+                image:
+                  repository: docker.io/hashicorp/vault-enterprise
+                  tag: 1.13.11-ent
+                authDelegator:
+                  # Requires permissions on cluster scope, enable for kubernetes auth. This can be disabled,
+                  # since we don't support clients to authenticate from this EKS cluster here.
+                  # https://www.vaultproject.io/docs/auth/kubernetes#configuring-kubernetes
+                  enabled: false
+                affinity: |
+                  podAntiAffinity:
+                    # Choose a soft scheduling preference, because we distribute 3-5 Pods to 3 nodes/zone:
+                    # https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#an-example-of-a-pod-that-uses-pod-affinity
+                    #
+                    # The anti-affinity rule says that we prefer to schedule the Vault server pods (identified by name/instance labels)
+                    # in separate zones (topologyKey kubernetes.io/zone).
+                    preferredDuringSchedulingIgnoredDuringExecution:
+                      - weight: 100
+                        podAffinityTerm:
+                          labelSelector:
+                            matchLabels:
+                              app.kubernetes.io/name: {{ template "vault.name" . }}
+                              app.kubernetes.io/instance: "{{ .Release.Name }}"
+                              component: server
+                          topologyKey: kubernetes.io/zone
+
+              injector:
+                # Deploy Vault server cluster w/o injector
+                enabled: false
+    
+  

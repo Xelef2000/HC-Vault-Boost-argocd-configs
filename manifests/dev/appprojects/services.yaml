@@ -11,12 +11,8 @@ metadata:
 spec:
   description: deploy services from Argo CD
   destinations:
-    - namespace: infra-argocd
-      server: https://kubernetes.default.svc
-    - namespace: vault-primary
-      server: https://kubernetes.default.svc
-    - namespace: vault-dr
-      server: https://kubernetes.default.svc
+    - namespace: '*'
+      server: '*'
   clusterResourceWhitelist:
     - group: ""
       kind: Service

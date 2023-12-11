@@ -75,5 +75,20 @@ spec:
                   targetRevision: HEAD
                 syncPolicy:
                   automated: {}
+              - name: services
+                namespace: infra-argocd
+                additionalLabels:
+                  app.kubernetes.io/component: infra
+                  app.kubernetes.io/name: helm-infrastructure-argoconfig
+                project: services
+                destination:
+                  namespace: infra-argocd
+                  server: https://kubernetes.default.svc
+                source:
+                  path: manifests/dev/services/
+                  repoURL: https://github.com/Xelef2000/HC-Vault-Boost-argocd-configs.git
+                  targetRevision: HEAD
+                syncPolicy:
+                  automated: {}
 
 

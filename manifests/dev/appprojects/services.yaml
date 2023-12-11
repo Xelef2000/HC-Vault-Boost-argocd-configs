@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: namespaces
+  name: services
   namespace: infra-argocd
   labels:
     app.kubernetes.io/name: services

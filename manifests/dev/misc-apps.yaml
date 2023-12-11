@@ -76,13 +76,13 @@ spec:
                 syncPolicy:
                   automated: {}
               - name: services
-                # namespace: infra-argocd
+                namespace: infra-argocd
                 additionalLabels:
                   app.kubernetes.io/component: infra
                   app.kubernetes.io/name: helm-infrastructure-argoconfig
                 project: services
                 destination:
-                  namespace: infra-argocd
+                  # namespace: infra-argocd
                   server: https://kubernetes.default.svc
                 source:
                   path: manifests/dev/services/

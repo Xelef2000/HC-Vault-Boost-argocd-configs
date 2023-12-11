@@ -10,6 +10,9 @@ metadata:
     app.kubernetes.io/managed-by: helm-infra-argocd
 spec:
   description: deploy services from Argo CD
+  destinations:
+    - namespace: infra-argocd
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: ""
       kind: Service

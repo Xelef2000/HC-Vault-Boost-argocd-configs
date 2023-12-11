@@ -13,6 +13,10 @@ spec:
   destinations:
     - namespace: infra-argocd
       server: https://kubernetes.default.svc
+    - namespace: vault-primary
+      server: https://kubernetes.default.svc
+    - namespace: vault-dr
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: ""
       kind: Service

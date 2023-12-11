@@ -11,7 +11,7 @@ metadata:
 spec:
   description: deploy services from Argo CD
   destinations:
-    - namespace: infra-argocdjtut
+    - namespace: infra-argocd
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: ""

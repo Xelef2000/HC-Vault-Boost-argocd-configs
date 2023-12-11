@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: security-apps-dr
+  name: security-apps-autounseal
   namespace: infra-argocd
   labels:
     app.kubernetes.io/name: argocd-configs

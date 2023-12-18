@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 
+  name: ubuntu-deployment-vault
   namespace: vault-ansible
   labels:
     app: ubuntu

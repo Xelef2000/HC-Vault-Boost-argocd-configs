@@ -10,7 +10,8 @@ metadata:
 
 spec:
   rules:
-  - http:
+  - host: vault-ansible-vault-api.vault-boost.lab
+    http:
       paths:
       - path: /
         pathType: Prefix

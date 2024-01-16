@@ -17,5 +17,12 @@ spec:
     spec:
       containers:
       - name: ubuntu
-        image: ubuntu
+        image: robertdebock/ubuntu
         command: ["sleep", "99999"]
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+          requests:
+            cpu: "100m"
+            memory: "100Mi"

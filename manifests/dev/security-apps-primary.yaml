@@ -95,6 +95,13 @@ spec:
                         tls_cert_file = "/vault/tls/vault.crt"
                         tls_key_file = "/vault/tls/vault.key"
                       }
+                      # seal "transit" {
+                      #   address = "$VAULT_ADDR"
+                      #   disable_renewal = "false"
+                      #   key_name = "autounseal"
+                      #   mount_path = "transit/"
+                      #   tls_skip_verify = "true"
+                      # }
                       storage "raft" {
                         path = "/vault/data"
                         retry_join {

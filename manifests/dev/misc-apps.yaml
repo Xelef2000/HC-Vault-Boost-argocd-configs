@@ -32,7 +32,7 @@ spec:
             namespace: infra-argocd
           values:
             applications:
-              - name: argocd-configs
+              argocd-configs:
                 namespace: infra-argocd
                 project: infra-argocd
                 destination:
@@ -46,7 +46,7 @@ spec:
                   automated: {}
                   syncOptions:
                     - CreateNamespace=true
-              - name: namespaces
+              namespaces:
                 namespace: infra-argocd
                 additionalLabels:
                   app.kubernetes.io/component: infra
@@ -61,7 +61,7 @@ spec:
                   targetRevision: HEAD
                 syncPolicy:
                   automated: {}
-              - name: appprojects
+              appprojects:
                 namespace: infra-argocd
                 additionalAnnotations:
                   argocd.argoproj.io/sync-wave: "-1"
@@ -75,7 +75,7 @@ spec:
                   targetRevision: HEAD
                 syncPolicy:
                   automated: {}
-              - name: services
+              services:
                 namespace: infra-argocd
                 additionalLabels:
                   app.kubernetes.io/component: infra
@@ -90,7 +90,7 @@ spec:
                   targetRevision: HEAD
                 syncPolicy:
                   automated: {}
-              - name: deployments
+              deployments:
                 namespace: infra-argocd
                 additionalLabels:
                   app.kubernetes.io/component: infra
@@ -105,7 +105,7 @@ spec:
                   targetRevision: HEAD
                 syncPolicy:
                   automated: {}
-              - name: ingress
+              ingress:
                 namespace: infra-argocd
                 additionalLabels:
                   app.kubernetes.io/component: infra
@@ -120,5 +120,3 @@ spec:
                   targetRevision: HEAD
                 syncPolicy:
                   automated: {}
-
-

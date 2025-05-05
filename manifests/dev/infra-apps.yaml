@@ -36,6 +36,12 @@ spec:
             namespace: infra-argocd
           fullnameOverride: argocd
           values:
+            configs:
+              cm:
+                create: true
+                url: https://argocd.vault-boost.lab
+                admin.enabled: "true"
+                users.anonymous.enabled: "false"
             createAggregateRoles: true
             controller:
               resources:

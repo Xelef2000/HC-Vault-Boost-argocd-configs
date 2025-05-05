@@ -43,6 +43,8 @@ spec:
                 admin.enabled: "true"
                 users.anonymous.enabled: "false"
             createAggregateRoles: true
+            global:
+              domain: argocd.vault-boost.lab
             controller:
               resources:
                 requests:

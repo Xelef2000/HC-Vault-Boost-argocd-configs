@@ -9,6 +9,11 @@ metadata:
     app.kubernetes.io/component: app-vault-primary
     app.kubernetes.io/managed-by: helm-infra-argocd
 spec:
+  clusterResourceWhitelist:
+  - group: rbac.authorization.k8s.io
+    kind: ClusterRoleBinding
+  - group: rbac.authorization.k8s.io
+    kind: ClusterRole
   description: deploy Vault
   destinations:
     - namespace: vault-primary

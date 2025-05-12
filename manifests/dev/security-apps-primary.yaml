@@ -138,10 +138,7 @@ spec:
                   repository: docker.io/hashicorp/vault-enterprise
                   tag: 1.13.11-ent
                 authDelegator:
-                  # Requires permissions on cluster scope, enable for kubernetes auth. This can be disabled,
-                  # since we don't support clients to authenticate from this EKS cluster here.
-                  # https://www.vaultproject.io/docs/auth/kubernetes#configuring-kubernetes
-                  enabled: false
+                  enabled: true
                 affinity: |
                   podAntiAffinity:
                     # Choose a soft scheduling preference, because we distribute 3-5 Pods to 3 nodes/zone:
